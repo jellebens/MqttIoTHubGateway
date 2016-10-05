@@ -2,7 +2,6 @@
 
 var mqtt = require('mqtt');
 var winston = require('winston');
-require('rolling-file-transport');
 var moment = require('moment');
 var config = require('./config.js');
 var MqttDevice = require('azure-iot-device-mqtt');
