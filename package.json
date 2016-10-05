@@ -1,0 +1,31 @@
+{
+  "name": "MqttIoTHubGateway",
+  "version": "0.0.1",
+  "description": "Forwards messages from local mqtt bus to Azure IoTHub",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jellebens/MqttIoTHubGateway.git"
+  },
+  "keywords": [
+    "mqtt",
+    "azure",
+    "iothub",
+    "iot"
+  ],
+  "author": "Jelle Bens",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jellebens/MqttIoTHubGateway/issues"
+  },
+  "dependencies": {
+    "azure-iot-device": "^1.0.15",
+    "azure-iot-device-mqtt": "^1.0.15",
+    "moment": "^2.15.1",
+    "mqtt": "^2.0.1",
+    "winston": "^2.2.0"
+  }
+}
