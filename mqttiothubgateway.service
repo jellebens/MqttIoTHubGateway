@@ -1,0 +1,14 @@
+[Unit]
+Description=Mqtt Azure IotHub Gateway
+
+
+[Service]
+ExecStart=/usr/bin/node /usr/share/MqttIoTHubGateway/service.js
+Restart=always
+RestartSec=10
+User=gateway
+Group=gateway
+Environment=NODE_ENV=production 
+
+[Install]
+WantedBy=multi-user.target
