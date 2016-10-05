@@ -2,6 +2,7 @@
 
 var mqtt = require('mqtt');
 var winston = require('winston');
+require('rolling-file-transport');
 var moment = require('moment');
 var config = require('./config.js');
 var MqttDevice = require('azure-iot-device-mqtt');
@@ -19,6 +20,7 @@ var logger = new (winston.Logger)({
                                                         json: false,
                                                         maxsize: 5242880, //5MB
                                                         maxFiles: 5,
+							prettyPrint:true,
                                                         colorize: false}),
                                                 new (winston.transports.Console)({
                                                         'timestamp': true,
@@ -27,8 +29,6 @@ var logger = new (winston.Logger)({
                                                         handleExceptions:true
                                                         })
                                             ]});
-
-
 
 
 var connectionString = config.iotHub.Connectionstring;
