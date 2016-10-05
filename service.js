@@ -9,11 +9,11 @@ var IotDevice = require('azure-iot-device');
 var clientId='MqttIoTHubgateWay'; 
 
 
-var logfile = '/var/log/MqttIotHubGateway/errlog_' + moment().format('YYMMDDhhmmss')  + '.log';
+var logfile = '/var/log/MqttIoTHubGateway/errlog_' + moment().format('YYMMDDhhmmss')  + '.log';
 
 var logger = new (winston.Logger)({
                                 transports : [  new winston.transports.File({
-                                                        level: 'error',
+                                                        level: 'warning',
                                                         filename:  logfile,
                                                         handleExceptions: true,
                                                         json: false,
