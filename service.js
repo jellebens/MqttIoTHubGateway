@@ -9,26 +9,28 @@ var IotDevice = require('azure-iot-device');
 var clientId='MqttIoTHubgateWay'; 
 
 
-var logfile = '/var/log/MqttIoTHubGateway/errlog_' + moment().format('YYMMDDhhmmss')  + '.log';
+var logfile = '/var/log/MqttIoTHubGateway/errors.log';
 
 var logger = new (winston.Logger)({
                                 transports : [  new winston.transports.File({
-                                                        level: 'warning',
+                                                        level: 'info',
                                                         filename:  logfile,
                                                         handleExceptions: true,
                                                         json: false,
-                                                        maxsize: 5242880, //5MB
+                                                        maxsize: 52428800, //50MB
                                                         maxFiles: 5,
 							prettyPrint:true,
                                                         colorize: false}),
                                                 new (winston.transports.Console)({
-                                                        'timestamp': true,
+                                                        level:'debug',
+							'timestamp': true,
                                                         colorize: true,
                                                         prettyPrint:true,
                                                         handleExceptions:true
                                                         })
                                             ]});
 
+logger.warn('Starting Application');
 
 var connectionString = config.iotHub.Connectionstring;
 logger.info('Creating Azure IotHub Client');
@@ -56,14 +58,14 @@ var mqttClientSettings= {
 var mqttClient = mqtt.connect('mqtt://localhost', mqttClientSettings);
 
 logger.info('Subscribing to topics');
-mqttClient.subscribe('bir57/#');
+mqttClient.subscribe('bir57/sensors/#');
 
 logger.info('Starting to listen to messages');
 mqttClient.on('message', function(topic, msg){
 	
-	logger.info('Received message on topic ' + topic);
+	logger.debug('Received message on topic ' + topic);
 
-        var forwardedMsg = new IotDevice.Message('');
+        var forwardedMsg = new IotDevice.Message(msg);
         
         azureClient.sendEvent(forwardedMsg, printResultFor('send'));
         
@@ -75,11 +77,19 @@ function printResultFor(op) {
     return function printResult(err, res) {
         if (err) { 
 	    logger.error(op + ' error: ' + err.toString());
-	    logger.info('Exiting');
 	    process.exit(1);
 	} 
         if (res) { 
-            logger.info('Message successfully forwarded');
+            logger.debug('Message successfully forwarded');
         } 
     };
 } 
+
+process.on('uncaughtException', function(err){
+	logger.error('Caught Exception ' + err);
+	mqttClient.end();
+});
+
+process.on('exit', function(){
+	logger.warn('Exiting');
+});
